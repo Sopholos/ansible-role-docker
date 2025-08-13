@@ -1,0 +1,34 @@
+---
+- name: prepare | install required system packages
+  apt:
+    pkg:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: latest
+
+- name: prepare | add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: prepare | add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu noble stable # $(lsb_release -cs)
+    state: present
+
+- name: prepare | update apt and install docker-ce
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: latest
+
+- name: prepare | python3-docker
+  apt:
+    name:
+      - python3-docker
+    state: present

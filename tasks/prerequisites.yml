@@ -6,16 +6,17 @@
       - curl
       - gnupg
       - lsb-release
+      - python3-debian
     state: latest
 
-- name: prepare | add Docker GPG apt Key
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-
-- name: prepare | add Docker Repository
-  apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu jammy stable # $(lsb_release -cs)
+- name: prepare | add Docker repository (DEB822 format)
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: [deb]
+    uris: "https://download.docker.com/linux/ubuntu"
+    suites: "{{ ansible_distribution_release }}"
+    components: [stable]
+    signed_by: "https://download.docker.com/linux/ubuntu/gpg"
     state: present
 
 - name: prepare | update apt and install docker-ce

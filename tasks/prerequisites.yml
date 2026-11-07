@@ -15,7 +15,7 @@
 
 - name: prepare | add Docker Repository
   apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu noble stable # $(lsb_release -cs)
+    repo: deb https://download.docker.com/linux/ubuntu jammy stable # $(lsb_release -cs)
     state: present
 
 - name: prepare | update apt and install docker-ce
@@ -26,6 +26,7 @@
       - containerd.io
       - docker-compose-plugin
     state: latest
+    update_cache: true
 
 - name: prepare | python3-docker
   apt:
